@@ -1,22 +1,60 @@
 name: Deploy Laravel API
+
 on:
   push:
     branches: [ main ]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Deploy to Server via SSH
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # ၁။ Node.js ကို GitHub Actions ထဲမှာ သတ်မှတ်မယ် (Version 20 သုံးမယ်)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # ၂။ Assets တွေကို GitHub မှာတင် Build လုပ်မယ်
+      - name: Install & Build Assets
+        run: |
+          npm install
+          npm run build
+
+      # ၃။ Build ထွက်လာတဲ့ ဖိုင်တွေကို Server ဆီ အရင်ပို့မယ်
+      - name: Upload Build Assets to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "public/build"
+          target: "/home/shweyoke/testing.shweyokelayexpress.com/public"
+          strip_components: 1
+
+      # ၄။ ကျန်တဲ့ Laravel command တွေကို Server ပေါ်မှာ run မယ်
+      - name: Execute Remote SSH Commands
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/shweyokelayexpress.com
+            cd /home/shweyoke/testing.shweyokelayexpress.com
+            
+            # Folder မရှိရင် ဆောက်မယ်၊ Permission ပေးမယ်
+            mkdir -p bootstrap/cache storage/framework/sessions storage/framework/views storage/framework/cache
+            chmod -R 775 storage bootstrap/cache
+            
+            # GitHub က ကုဒ်အသစ်ယူမယ်
             git pull origin main
+            
+            # Composer နဲ့ Laravel commands များ
             composer install --no-dev --optimize-autoloader
             php artisan migrate --force
             php artisan config:cache
             php artisan route:cache
+            php artisan view:cache
