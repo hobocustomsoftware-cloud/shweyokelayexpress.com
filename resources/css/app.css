@@ -1,0 +1,59 @@
+body {
+    font-size: 16px !important;
+    font-family: 'Noto Sans Myanmar', 'Padauk', sans-serif;
+    line-height: 1.5;
+    color: #333;
+}
+
+.app-sidebar {
+    background-color: #1f2d3d !important;
+}
+
+.sidebar-brand .brand-link .brand-image {
+    width: 150px !important;
+    max-height: 55px !important;
+}
+
+input,
+select,
+textarea,
+.btn, 
+.btn-sm,
+.form-select {
+    font-size: 16px !important;
+}
+
+legend {
+    font-size: 16px !important;
+}
+
+.login-container {
+    width: 100%;
+    background-image: url('/public/uploads/images/login-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-blend-mode: overlay;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.user-image {
+    background-color: var(--bs-dark);
+}
+
+.dt-search {
+    margin-bottom: 1rem;
+}
+
+.app-sidebar {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-sidebar .sidebar-wrapper {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}

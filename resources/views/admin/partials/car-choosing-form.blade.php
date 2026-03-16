@@ -1,0 +1,1 @@
+@livewire('car-choosing-form', ['putin_cargo' => $putin_cargo])
