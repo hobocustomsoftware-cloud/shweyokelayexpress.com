@@ -15,7 +15,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24' # Node version ကို 24 သို့ ပြောင်းလိုက်ပါ
+          node-version: '20' # Node version ကို 24 သို့ ပြောင်းလိုက်ပါ
 
       - name: Build Assets
         # Node.js 24 ဖြစ်သွားတဲ့အတွက် crypto error မျိုး လုံးဝတက်မှာ မဟုတ်တော့ပါဘူး
